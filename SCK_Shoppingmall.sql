@@ -27,4 +27,24 @@ select Product_Name,Product_Price from Products;
 select * from Products where Product_Price = '380.00';
 
 -- แสดงข้อมูล Product โดยเรียงลำดับชื่อจาก A-Z
-select * from Products order by Product_Name;
+select * from Products order by Product_Name ASC;
+
+-- แสดงข้อมูล Product ตามเงื่อนไข โดยใช้การเชื่อม and
+
+select * from Products where Product_Price >= 380.00 and Product_Price < 430;
+
+-- แสดงข้อมูล Product ตามเงื่อนไข โดยใช้การเชื่อม or
+select * from Products where Product_Price >= 380.00 or Product_Price <= 430;
+
+-- แสดงข้อมูล Product ตามเงื่อนไข โดยใช้คำสั่ง like เพื่อหาว่าสินค้าใดมีคำว่า Baby อยู่ในชื่อบ้าง
+select * from Products where Procuct_Name like '%baby%';
+
+-- แสดงข้อมูล Product โดยเรียงลำดับราคาจากมากสุดไปน้อยสุด
+select * from Products order by Product_Price DESC;
+
+-- แสดงข้อมูล Product โดยเรียงลำดับราคาจากมากสุดไปน้อยสุด และให้แสดงแค่ 2 แถวแรก
+select * from Products order by Product_Price DESC limit 2;
+
+-- แสดงข้อมูล Product โดยเรียงลำดับราคาจากมากสุดไปน้อยสุด และให้แสดงแถวที่ 2-3
+select * from Products order by Product_Price DESC limit 2 OFFSET 1;
+
