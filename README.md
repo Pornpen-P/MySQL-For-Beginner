@@ -52,3 +52,61 @@ where id = 3;
 ```
 
 คำสั่งต่าง ๆ ถือว่ามีประโยชน์มากในการจัดการฐานข้อมูลของเรา
+
+---
+สรุปสิ่งที่ได้เรียนรู้ในวันที่ 25 เมษายน 2567 
+
+1. การใช้คำสั่ง AS สามารถนำมาช่วยให้เราดูการแสดงผลข้อมูลได้สะดวกขึ้น เนื่องจากบางครั้งเราต้องการดูข้อมูลจากฟิลด์ที่ไม่มีชื่อระบุชัดเจน หรือมีชื่อยาวเกินไป เราสามารถเลือกให้แสดงผลตามที่เราต้องการได้ 
+
+ตัวอย่างเช่น 
+
+การแสดงข้อมูลจำนวน 2 ฟิล์ด โดยเปลี่ยนชื่อฟิลด์จาก Product_Price เป็น Prod_Price
+
+```
+select Product_Name,Product_Price AS Prod_Price
+from Products;
+```
+
+2. การใช้คำสั่ง Group by ทำให้เราสามารถดูข้อมูลได้อย่างเป็นสัดส่วน โดยการแบ่งกลุ่มให้กับข้อมูลที่เราค้นหา 
+
+ตัวอย่างเช่น 
+
+การแสดงข้อมูลเป็นกลุ่มโดยจัดกลุ่มตาม Product_Unit โดยนับจำนวนจาก id และ แสดงชื่อฟิลด์ที่นับเป็น Products_Count
+
+```
+select Product_Unit, count(id) AS products_Count
+from Products
+group by Product_Unit;
+```
+
+3. การสร้างตารางแบบเชื่อมต่อข้อมูลถึงกัน เหมือนเป็นตารางแม่และตารางลูก ต้องกำหนด Foreigen Key ให้กับฟิลด์ที่เราต้องการเชื่อมต่อด้วย นอกเหนือจากการเชื่อมตารางแล้ว 
+
+ตัวอย่างเช่น 
+
+การสร้างตารางแบบเชื่อมต่อกับตารางเดิม โดยกำหนดค่า FK
+```
+CREATE TABLE `SCK_Shopingmall`.`Product_notes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `note` TEXT(200) NOT NULL,
+  `Product_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Product_notes_Products_idx` (`Product_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Product_notes_products`
+    FOREIGN KEY (`Product_id`)
+    REFERENCES `SCK_Shopingmall`.`Products` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE);
+```
+
+และเมื่อจะทำการเพิ่มข้อมูลดังกล่าว เราจึงทำการระบุ id ของตัวแม่ไว้ที่ฟิลด์ที่เราเลือกเชื่อมต่อ
+
+ตัวอย่างเช่น 
+
+การเพิ่มข้อมูลในตารางเชื่อมต่อ
+
+```
+INSERT INTO `SCK_Shopingmall`.`Product_notes` (`note`, `Product_id`) VALUES ('น่ารักมาก', '1');
+```
+
+ค่าของช่อง Product_id ในตาราง Product_notes ก็คือ id ของ ตาราง Products นั่นเอง 
+
